@@ -1,13 +1,20 @@
 import { CarProps, FilterProps } from "@/types";
+import dotenv from 'dotenv';
+
+
+
 
 export async function fetchCars(filters:FilterProps ){
 
+    console.log(process.env.NEXT_PUBLIC_RAPID_API_KEY);
+    dotenv.config();
+    
   const {manufacturer, year, model,fuel,limit}=filters;
 
-    const headers = {
-		'X-RapidAPI-Key': '6c0a11fd60msh263bedb4dfdeecfp12f808jsnb764f79981e0',
-		'X-RapidAPI-Host': 'cars-by-api-ninjas.p.rapidapi.com'
-	}
+  const headers: HeadersInit  = {
+    "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY || "",
+    "X-RapidAPI-Host": "cars-by-api-ninjas.p.rapidapi.com",
+  };
 
   const response = await fetch(
     `https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?make=${manufacturer}&year=${year}&model=${model}&limit=${limit}&fuel_type=${fuel}`,
@@ -41,7 +48,7 @@ export const calculateCarRent = (city_mpg: number, year: number) => {
     const url = new URL("https://cdn.imagin.studio/getimage");
     const { make, model, year } = car;
   
-    url.searchParams.append('customer', 'hrjavascript-mastery');
+    url.searchParams.append('customer', process.env.NEXT_PUBLIC_IMAGIN_API_KEY || '');
     url.searchParams.append('make', make);
     url.searchParams.append('modelFamily', model.split(" ")[0]);
     url.searchParams.append('zoomType', 'fullscreen');
